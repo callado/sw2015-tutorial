@@ -1,0 +1,485 @@
+@prefix : <localhost:8080/lab3/ontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <localhost:8000/lab3/ontology#> .
+
+<localhost:8000/lab3/ontology#> rdf:type owl:Ontology .
+
+
+#################################################################
+#
+#    Object Properties
+#
+#################################################################
+
+
+###  localhost:8000/lab3/ontology#hasIngredient
+
+<localhost:8000/lab3/ontology#hasIngredient> rdf:type owl:ObjectProperty ,
+                                                      owl:TransitiveProperty ;
+                                             
+                                             rdfs:range [ rdf:type owl:Restriction ;
+                                                          owl:onProperty <localhost:8000/lab3/ontology#hasIngredient> ;
+                                                          owl:allValuesFrom <localhost:8000/lab3/ontology#Food>
+                                                        ] .
+
+
+
+###  localhost:8000/lab3/ontology#hasInstruction
+
+<localhost:8000/lab3/ontology#hasInstruction> rdf:type owl:ObjectProperty ;
+                                              
+                                              rdfs:range [ rdf:type owl:Restriction ;
+                                                           owl:onProperty <localhost:8000/lab3/ontology#hasInstruction> ;
+                                                           owl:allValuesFrom <localhost:8000/lab3/ontology#Instructions>
+                                                         ] .
+
+
+
+###  localhost:8000/lab3/ontology#isIngredientOf
+
+<localhost:8000/lab3/ontology#isIngredientOf> rdf:type owl:ObjectProperty ,
+                                                       owl:TransitiveProperty ;
+                                              
+                                              owl:inverseOf <localhost:8000/lab3/ontology#hasIngredient> .
+
+
+
+###  localhost:8000/lab3/ontology#provides
+
+<localhost:8000/lab3/ontology#provides> rdf:type owl:ObjectProperty .
+
+
+
+###  localhost:8000/lab3/ontology#providesNutrients
+
+<localhost:8000/lab3/ontology#providesNutrients> rdf:type owl:ObjectProperty ,
+                                                          owl:TransitiveProperty ;
+                                                 
+                                                 rdfs:subPropertyOf <localhost:8000/lab3/ontology#provides> ;
+                                                 
+                                                 rdfs:range [ rdf:type owl:Restriction ;
+                                                              owl:onProperty <localhost:8000/lab3/ontology#providesNutrients> ;
+                                                              owl:allValuesFrom <localhost:8000/lab3/ontology#Nutrients>
+                                                            ] .
+
+
+
+###  localhost:8000/lab3/ontology#resultsIn
+
+<localhost:8000/lab3/ontology#resultsIn> rdf:type owl:FunctionalProperty ,
+                                                  owl:ObjectProperty .
+
+
+
+
+
+#################################################################
+#
+#    Data properties
+#
+#################################################################
+
+
+###  localhost:8000/lab3/ontology#instructions
+
+<localhost:8000/lab3/ontology#instructions> rdf:type owl:DatatypeProperty .
+
+
+
+
+
+#################################################################
+#
+#    Classes
+#
+#################################################################
+
+
+###  localhost:8000/lab3/ontology#Beef
+
+<localhost:8000/lab3/ontology#Beef> rdf:type owl:Class ;
+                                    
+                                    rdfs:subClassOf <localhost:8000/lab3/ontology#Meat> .
+
+
+
+###  localhost:8000/lab3/ontology#Chicken
+
+<localhost:8000/lab3/ontology#Chicken> rdf:type owl:Class ;
+                                       
+                                       rdfs:subClassOf <localhost:8000/lab3/ontology#Meat> .
+
+
+
+###  localhost:8000/lab3/ontology#Food
+
+<localhost:8000/lab3/ontology#Food> rdf:type owl:Class ;
+                                    
+                                    owl:equivalentClass [ rdf:type owl:Restriction ;
+                                                          owl:onProperty <localhost:8000/lab3/ontology#providesNutrients> ;
+                                                          owl:someValuesFrom <localhost:8000/lab3/ontology#Nutrients>
+                                                        ] ;
+                                    
+                                    owl:disjointWith <localhost:8000/lab3/ontology#Instructions> ,
+                                                     <localhost:8000/lab3/ontology#Recipe> .
+
+
+
+###  localhost:8000/lab3/ontology#Fruit
+
+<localhost:8000/lab3/ontology#Fruit> rdf:type owl:Class ;
+                                     
+                                     rdfs:subClassOf <localhost:8000/lab3/ontology#Ingredients> .
+
+
+
+###  localhost:8000/lab3/ontology#Ingredients
+
+<localhost:8000/lab3/ontology#Ingredients> rdf:type owl:Class ;
+                                           
+                                           rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                                             owl:onProperty <localhost:8000/lab3/ontology#providesNutrients> ;
+                                                             owl:someValuesFrom <localhost:8000/lab3/ontology#Nutrients>
+                                                           ] ;
+                                           
+                                           owl:disjointWith <localhost:8000/lab3/ontology#Instructions> ,
+                                                            <localhost:8000/lab3/ontology#Recipe> .
+
+
+
+###  localhost:8000/lab3/ontology#Instructions
+
+<localhost:8000/lab3/ontology#Instructions> rdf:type owl:Class ;
+                                            
+                                            owl:disjointWith <localhost:8000/lab3/ontology#Nutrients> .
+
+
+
+###  localhost:8000/lab3/ontology#Meat
+
+<localhost:8000/lab3/ontology#Meat> rdf:type owl:Class ;
+                                    
+                                    rdfs:subClassOf <localhost:8000/lab3/ontology#Ingredients> .
+
+
+
+###  localhost:8000/lab3/ontology#Nutrients
+
+<localhost:8000/lab3/ontology#Nutrients> rdf:type owl:Class ;
+                                         
+                                         owl:disjointWith <localhost:8000/lab3/ontology#Recipe> .
+
+
+
+###  localhost:8000/lab3/ontology#Recipe
+
+<localhost:8000/lab3/ontology#Recipe> rdf:type owl:Class ;
+                                      
+                                      owl:equivalentClass [ rdf:type owl:Class ;
+                                                            owl:intersectionOf ( [ rdf:type owl:Restriction ;
+                                                                                   owl:onProperty <localhost:8000/lab3/ontology#hasIngredient> ;
+                                                                                   owl:allValuesFrom <localhost:8000/lab3/ontology#Ingredients>
+                                                                                 ]
+                                                                                 [ rdf:type owl:Restriction ;
+                                                                                   owl:onProperty <localhost:8000/lab3/ontology#hasInstruction> ;
+                                                                                   owl:allValuesFrom <localhost:8000/lab3/ontology#Instructions>
+                                                                                 ]
+                                                                               )
+                                                          ] ;
+                                      
+                                      rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                                        owl:onProperty <localhost:8000/lab3/ontology#resultsIn> ;
+                                                        owl:someValuesFrom <localhost:8000/lab3/ontology#Food>
+                                                      ] .
+
+
+
+###  localhost:8000/lab3/ontology#Rice
+
+<localhost:8000/lab3/ontology#Rice> rdf:type owl:Class ;
+                                    
+                                    rdfs:subClassOf <localhost:8000/lab3/ontology#Ingredients> .
+
+
+
+###  localhost:8000/lab3/ontology#Risotto
+
+<localhost:8000/lab3/ontology#Risotto> rdf:type owl:Class ;
+                                       
+                                       rdfs:subClassOf <localhost:8000/lab3/ontology#Food> ,
+                                                       [ rdf:type owl:Restriction ;
+                                                         owl:onProperty <localhost:8000/lab3/ontology#hasIngredient> ;
+                                                         owl:someValuesFrom <localhost:8000/lab3/ontology#Rice>
+                                                       ] .
+
+
+
+###  localhost:8000/lab3/ontology#Spice
+
+<localhost:8000/lab3/ontology#Spice> rdf:type owl:Class ;
+                                     
+                                     rdfs:subClassOf <localhost:8000/lab3/ontology#Ingredients> .
+
+
+
+###  localhost:8000/lab3/ontology#Sugar
+
+<localhost:8000/lab3/ontology#Sugar> rdf:type owl:Class ;
+                                     
+                                     rdfs:subClassOf <localhost:8000/lab3/ontology#Ingredients> .
+
+
+
+
+
+#################################################################
+#
+#    Individuals
+#
+#################################################################
+
+
+###  localhost:8000/lab3/ontology#Apple
+
+<localhost:8000/lab3/ontology#Apple> rdf:type owl:NamedIndividual ,
+                                              <localhost:8000/lab3/ontology#Fruit> ;
+                                     
+                                     rdfs:label "Apple" ;
+                                     
+                                     <localhost:8000/lab3/ontology#providesNutrients> <localhost:8000/lab3/ontology#Calories> ,
+                                                                                      <localhost:8000/lab3/ontology#Carb> .
+
+
+
+###  localhost:8000/lab3/ontology#ArborioRice
+
+<localhost:8000/lab3/ontology#ArborioRice> rdf:type owl:NamedIndividual ,
+                                                    <localhost:8000/lab3/ontology#Rice> ;
+                                           
+                                           rdfs:label "Arborio rice" ;
+                                           
+                                           <localhost:8000/lab3/ontology#providesNutrients> <localhost:8000/lab3/ontology#Calories> ,
+                                                                                            <localhost:8000/lab3/ontology#Carb> .
+
+
+
+###  localhost:8000/lab3/ontology#Basil
+
+<localhost:8000/lab3/ontology#Basil> rdf:type owl:NamedIndividual ,
+                                              <localhost:8000/lab3/ontology#Spice> ;
+                                     
+                                     rdfs:label "Basil" .
+
+
+
+###  localhost:8000/lab3/ontology#BeefAndTomatoRisotto
+
+<localhost:8000/lab3/ontology#BeefAndTomatoRisotto> rdf:type owl:NamedIndividual ,
+                                                             <localhost:8000/lab3/ontology#Food> ;
+                                                    
+                                                    rdfs:label "Beef and tomato risotto" ;
+                                                    
+                                                    <localhost:8000/lab3/ontology#hasIngredient> <localhost:8000/lab3/ontology#ArborioRice> ,
+                                                                                                 <localhost:8000/lab3/ontology#Basil> ;
+                                                    
+                                                    <localhost:8000/lab3/ontology#providesNutrients> <localhost:8000/lab3/ontology#Calories> ,
+                                                                                                     <localhost:8000/lab3/ontology#Fat> ;
+                                                    
+                                                    <localhost:8000/lab3/ontology#hasIngredient> <localhost:8000/lab3/ontology#Garlic> ,
+                                                                                                 <localhost:8000/lab3/ontology#Salt> ,
+                                                                                                 <localhost:8000/lab3/ontology#Sirloin> ,
+                                                                                                 <localhost:8000/lab3/ontology#Tomato> .
+
+
+
+###  localhost:8000/lab3/ontology#BeefAndTomatoRisottoRecipe
+
+<localhost:8000/lab3/ontology#BeefAndTomatoRisottoRecipe> rdf:type owl:NamedIndividual ,
+                                                                   <localhost:8000/lab3/ontology#Recipe> ;
+                                                          
+                                                          rdfs:label "Beef and tomato risotto recipe" ;
+                                                          
+                                                          <localhost:8000/lab3/ontology#hasIngredient> <localhost:8000/lab3/ontology#ArborioRice> ,
+                                                                                                       <localhost:8000/lab3/ontology#Basil> ;
+                                                          
+                                                          <localhost:8000/lab3/ontology#resultsIn> <localhost:8000/lab3/ontology#BeefAndTomatoRisotto> ;
+                                                          
+                                                          <localhost:8000/lab3/ontology#hasInstruction> <localhost:8000/lab3/ontology#BeefAndTomatoRisottoRecipeInstructions> ;
+                                                          
+                                                          <localhost:8000/lab3/ontology#hasIngredient> <localhost:8000/lab3/ontology#Garlic> ,
+                                                                                                       <localhost:8000/lab3/ontology#Salt> ,
+                                                                                                       <localhost:8000/lab3/ontology#Sirloin> ,
+                                                                                                       <localhost:8000/lab3/ontology#Tomato> .
+
+
+
+###  localhost:8000/lab3/ontology#BeefAndTomatoRisottoRecipeInstructions
+
+<localhost:8000/lab3/ontology#BeefAndTomatoRisottoRecipeInstructions> rdf:type owl:NamedIndividual ,
+                                                                               <localhost:8000/lab3/ontology#Instructions> ;
+                                                                      
+                                                                      rdfs:label "Beef and tomato risotto instructions" ;
+                                                                      
+                                                                      <localhost:8000/lab3/ontology#instructions> """Tip the chopped tomatoes and half the stock into a food processor and pulse until smooth. 
+Pour into a saucepan with the remaining stock, bring to a gentle simmer and keep over a low heat.
+Meanwhile, place the butter and oil in the base of a large saucepan and heat gently until the butter has melted. Add the onion and gently cook for 6-8 mins until softened.
+Stir in the garlic and rosemary, then cook for 1 min more. Add the rice and cook, stirring, for 1 min.
+Start adding the hot stock and tomato mixture about a quarter at a time. Let the risotto cook, stirring often, adding more stock as it is absorbed.
+ After you have added half the stock, add the cherry tomatoes. After 20-25 mins, the rice should be creamy and tender, the cherry tomatoes softened and all of the stock should be used up.
+Cover and leave for 1 min, then stir in the basil. Serve sprinkled with Parmesan and a good grinding of black pepper."""^^xsd:string .
+
+
+
+###  localhost:8000/lab3/ontology#BrownSugar
+
+<localhost:8000/lab3/ontology#BrownSugar> rdf:type owl:NamedIndividual ,
+                                                   <localhost:8000/lab3/ontology#Sugar> ;
+                                          
+                                          rdfs:label "Brown sugar" ;
+                                          
+                                          <localhost:8000/lab3/ontology#providesNutrients> <localhost:8000/lab3/ontology#Calories> ,
+                                                                                           <localhost:8000/lab3/ontology#Carb> .
+
+
+
+###  localhost:8000/lab3/ontology#Calories
+
+<localhost:8000/lab3/ontology#Calories> rdf:type owl:NamedIndividual ,
+                                                 <localhost:8000/lab3/ontology#Nutrients> ;
+                                        
+                                        rdfs:label "Calories" .
+
+
+
+###  localhost:8000/lab3/ontology#Carb
+
+<localhost:8000/lab3/ontology#Carb> rdf:type owl:NamedIndividual ,
+                                             <localhost:8000/lab3/ontology#Nutrients> ;
+                                    
+                                    rdfs:label "Carb" .
+
+
+
+###  localhost:8000/lab3/ontology#ChickenBreast
+
+<localhost:8000/lab3/ontology#ChickenBreast> rdf:type owl:NamedIndividual ,
+                                                      <localhost:8000/lab3/ontology#Chicken> ;
+                                             
+                                             rdfs:label "Chicken Breast" ;
+                                             
+                                             <localhost:8000/lab3/ontology#providesNutrients> <localhost:8000/lab3/ontology#Calories> ,
+                                                                                              <localhost:8000/lab3/ontology#Fat> ,
+                                                                                              <localhost:8000/lab3/ontology#Protein> .
+
+
+
+###  localhost:8000/lab3/ontology#ChickenWing
+
+<localhost:8000/lab3/ontology#ChickenWing> rdf:type owl:NamedIndividual ,
+                                                    <localhost:8000/lab3/ontology#Chicken> ;
+                                           
+                                           rdfs:label "Chicken Wing" ;
+                                           
+                                           <localhost:8000/lab3/ontology#providesNutrients> <localhost:8000/lab3/ontology#Calories> ,
+                                                                                            <localhost:8000/lab3/ontology#Fat> ,
+                                                                                            <localhost:8000/lab3/ontology#Protein> .
+
+
+
+###  localhost:8000/lab3/ontology#Fat
+
+<localhost:8000/lab3/ontology#Fat> rdf:type owl:NamedIndividual ,
+                                            <localhost:8000/lab3/ontology#Nutrients> ;
+                                   
+                                   rdfs:label "Fat" .
+
+
+
+###  localhost:8000/lab3/ontology#Garlic
+
+<localhost:8000/lab3/ontology#Garlic> rdf:type owl:NamedIndividual ,
+                                               <localhost:8000/lab3/ontology#Spice> ;
+                                      
+                                      rdfs:label "Garlic" .
+
+
+
+###  localhost:8000/lab3/ontology#Protein
+
+<localhost:8000/lab3/ontology#Protein> rdf:type owl:NamedIndividual ,
+                                                <localhost:8000/lab3/ontology#Nutrients> ;
+                                       
+                                       rdfs:label "Protein" .
+
+
+
+###  localhost:8000/lab3/ontology#Salt
+
+<localhost:8000/lab3/ontology#Salt> rdf:type owl:NamedIndividual ,
+                                             <localhost:8000/lab3/ontology#Spice> ;
+                                    
+                                    rdfs:label "Salt" .
+
+
+
+###  localhost:8000/lab3/ontology#Sirloin
+
+<localhost:8000/lab3/ontology#Sirloin> rdf:type owl:NamedIndividual ,
+                                                <localhost:8000/lab3/ontology#Beef> ;
+                                       
+                                       rdfs:label "Sirloin" ;
+                                       
+                                       <localhost:8000/lab3/ontology#providesNutrients> <localhost:8000/lab3/ontology#Calories> ,
+                                                                                        <localhost:8000/lab3/ontology#Fat> ,
+                                                                                        <localhost:8000/lab3/ontology#Protein> .
+
+
+
+###  localhost:8000/lab3/ontology#Tomato
+
+<localhost:8000/lab3/ontology#Tomato> rdf:type owl:NamedIndividual ,
+                                               <localhost:8000/lab3/ontology#Fruit> ;
+                                      
+                                      rdfs:label "Tomato" ;
+                                      
+                                      <localhost:8000/lab3/ontology#providesNutrients> <localhost:8000/lab3/ontology#Calories> ,
+                                                                                       <localhost:8000/lab3/ontology#Carb> .
+
+
+
+###  localhost:8000/lab3/ontology#WhiteSugar
+
+<localhost:8000/lab3/ontology#WhiteSugar> rdf:type owl:NamedIndividual ,
+                                                   <localhost:8000/lab3/ontology#Sugar> ;
+                                          
+                                          rdfs:label "White sugar" ;
+                                          
+                                          <localhost:8000/lab3/ontology#providesNutrients> <localhost:8000/lab3/ontology#Calories> ,
+                                                                                           <localhost:8000/lab3/ontology#Carb> .
+
+
+
+
+
+#################################################################
+#
+#    General axioms
+#
+#################################################################
+
+
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( <localhost:8000/lab3/ontology#BrownSugar>
+                        <localhost:8000/lab3/ontology#WhiteSugar>
+                      )
+] .
+
+
+
+
+###  Generated by the OWL API (version 3.5.1) http://owlapi.sourceforge.net
+
