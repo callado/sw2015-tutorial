@@ -46,7 +46,7 @@ $('#link14').on('click', function(e){
 					var v_type = value[v]['type'];
 					var v_value = value[v]['value'];
 				
-					// li.append('<strong>'+v+'</strong><br/>');
+					li.append('<strong>'+v+'</strong><br/>');
 				
 					// If the value is a URI, create a hyperlink
 					if (v_type == 'uri') {
